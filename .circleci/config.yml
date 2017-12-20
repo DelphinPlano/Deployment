@@ -1,3 +1,7 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   build:
@@ -5,15 +9,27 @@ jobs:
       - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
-      - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      - run:
+          name: Install dependencies
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm install
+            fi
+    docker:
+      - image: circleci/python:3.6.2-stretch-browsers
+    steps:
+      - checkout
       - run:
           name: Install Python deps in a venv
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
-      - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
-          paths:
-            - "venv"
+      - deploy:
+          name: Deploy Master to AWS Elasticbeanstalk
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              bash ./.circleci/setup-eb.sh
+              eb deploy 
+            fi
+    
