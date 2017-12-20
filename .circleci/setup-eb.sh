@@ -1,6 +1,7 @@
 set -x
 set -e
 
+dir
 mkdir /home/ubuntu/.aws
 touch /home/ubuntu/.aws/config
 chmod 600 /home/ubuntu/.aws/config
