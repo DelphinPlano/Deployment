@@ -16,9 +16,13 @@ jobs:
               python3 -m venv venv
               . venv/bin/activate
               pip install awsebcli
-              bash ./.circleci/setup-eb.sh
+            fi
+      - deploy:
+          name: Install Python deps in a venv
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               eb use sale-chaintrade-staging
-              eb deploy
+              eb deploy --profile eb-cli
             fi
             
     
