@@ -6,30 +6,18 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:7.10
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              npm install
-            fi
-    docker:
       - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
       - run:
           name: Install Python deps in a venv
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install awsebcli
-      - deploy:
-          name: Deploy Master to AWS Elasticbeanstalk
-          command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 -m venv venv
+              . venv/bin/activate
+              pip install awsebcli
               bash ./.circleci/setup-eb.sh
               eb deploy 
             fi
+            
     
