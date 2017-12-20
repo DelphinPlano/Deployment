@@ -30,6 +30,7 @@ jobs:
           name: Install Python deps in a venv
           command: |
             sudo apt-get install python3.4
+            python3 get-pip.py --user
             sudo pip install awsebcli
 
       - save_cache:
