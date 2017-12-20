@@ -17,8 +17,8 @@ jobs:
               . venv/bin/activate
               pip install awsebcli
               bash ./.circleci/setup-eb.sh
-              eb use sale-chaintrade-staging --profile default
-              eb deploy --profile default
+              eb use sale-chaintrade-staging
+              eb deploy
             fi
             
     
