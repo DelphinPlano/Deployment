@@ -17,9 +17,8 @@ jobs:
               . venv/bin/activate
               pip install awsebcli
               bash ./.circleci/setup-eb.sh
-              eb config list
-              eb list
-              eb deploy
+              eb init
+              echo 1
             fi
             
     
